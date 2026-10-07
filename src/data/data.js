@@ -4,9 +4,15 @@ export const stars = [
     name: "Alyx Star",
     thumbnail: "https://cdn.elitebabes.com/content/models_ret/13740-alyx-star_400.jpg",
     videos: [
-      { id: 101, title: "Golden Hour Drift", thumbnail: "https://picsum.photos/seed/v101/400/700", src: "https://www.interracial.com/embed/42840",       duration: "0:58" },
-      { id: 102, title: "Neon Rain",         thumbnail: null,                                       src: "https://www.pornhub.org/embed/ph60c25eeb8939c", duration: "1:12" },
-      { id: 103, title: "Midnight Bloom",    thumbnail: "https://picsum.photos/seed/v103/400/700", src: "https://www.w3schools.com/html/mov_bbb.mp4",     duration: "0:47" },
+      { id: 101, title: "Golden Hour Drift", thumbnail: null, src: "https://mega.nz/embed/3vZCWbiY#vArKPod3aL1J1mkf-WxU43mJyucwTaiwzRt--oaj3Og",       duration: "0:58" },
+      { id: 102, title: "Neon Rain",         thumbnail: null, src: "https://mega.nz/embed/WnJWQRZR#AAAAAAAAAAAFkDmxSicUQgAAAAAAAAAA-m_GTkonFEI", duration: "1:12" },
+      { id: 103, title: "Midnight Bloom",    thumbnail: null, src: "https://mega.nz/embed/nqIngQba#WvQC0FN6t89Nb1xpWDfWSwx1s_PgKhTeJgTY-nlAZ6U",     duration: "0:47" },
+      { id: 104, title: "Midnight Bloom",    thumbnail: null, src: "https://mega.nz/embed/y2pFGJKb#xKFbYcYNoBecYAODxIgEtXT9HH9f-tfv2Ohy83WUY9E",     duration: "0:47" },
+      { id: 105, title: "Midnight Bloom",    thumbnail: null, src: "https://mega.nz/embed/bmojwBwa#-arSQUq-Mtu8dL6twIBrZiTC5WH-eaX9OWYHKRXGQQA",     duration: "0:47" },
+      { id: 106, title: "Midnight Bloom",    thumbnail: null, src: "https://mega.nz/embed/nq5mWbJC#PXDbJwjJroBZfrW7VHHAvankCKmMkGGB7Khq29uHbV0",     duration: "0:47" },
+      { id: 107, title: "Midnight Bloom",    thumbnail: null, src: "https://mega.nz/embed/HvRAWKZS#G7326kvjc1p8K_YZHKq3fSWZ74nUfEjzLGZmAzCx0Tk",     duration: "0:47" },
+      { id: 108, title: "Midnight Bloom",    thumbnail: null, src: "",     duration: "0:47" },
+      { id: 109, title: "Midnight Bloom",    thumbnail: null, src: "",     duration: "0:47" },
     ],
   },
   {
@@ -14,7 +20,7 @@ export const stars = [
     name: "Aria Sky",
     thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4-QSmpNUAvnlU1FF218kl7lWZjm5MuMIuFip7GCW7sjpXEJehKjmxWXW9&s=10",
     videos: [
-      { id: 201, title: "Desert Run", thumbnail: null, src: "https://xhamster46.desi/embed/big-titty-cheating-wife-gets-bbc-in-hotel-room-hot-fuck-xh5ghfo", duration: "1:05" },
+      { id: 201, title: "Desert Run", thumbnail: null, src: "https://www.momvids.com/embed/102572", duration: "1:05" },
       { id: 202, title: "Summit",     thumbnail: "https://picsum.photos/seed/v202/400/700", src: "https://www.w3schools.com/html/mov_bbb.mp4", duration: "2:01" },
     ],
   },
