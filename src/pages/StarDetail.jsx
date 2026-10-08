@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { stars } from '../data/data';
 
-// ── helper: is this src an iframe embed or a direct mp4? ──────────────
-// If src ends with .mp4 or .webm or .ogg → use <video>
-// Everything else (embed URLs) → use <iframe>
+// ── helper: is this src a direct video file or an embed URL?
 function isDirectVideo(src) {
   if (!src) return false;
   const url = src.toLowerCase().split('?')[0];
@@ -35,7 +33,7 @@ export default function StarDetail() {
   return (
     <main className="min-h-screen pt-20 pb-16 page-enter">
 
-      {/* Hero */}
+      {/* Hero Banner */}
       <div className="relative h-44 sm:h-56 md:h-64 overflow-hidden">
         <img
           src={star.thumbnail}
@@ -93,14 +91,11 @@ export default function StarDetail() {
         </div>
 
         {/* Videos Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2
-                        lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-5 sm:gap-6">
 
           {star.videos?.map((v, i) => {
             const isPlaying = playing === v.id;
             const direct    = isDirectVideo(v.src);
-
-            // if no thumbnail → show player directly without clicking
             const autoShow  = !v.thumbnail;
 
             return (
@@ -111,21 +106,24 @@ export default function StarDetail() {
               >
                 <div
                   className={`
-                    group relative w-full aspect-[9/14]
-                    rounded-2xl overflow-hidden bg-black border cursor-pointer
-                    transition-all duration-500 ease-out
+                    group relative w-full rounded-2xl overflow-hidden bg-black border
+                    cursor-pointer transition-all duration-500 ease-out
                     ${isPlaying || autoShow
                       ? 'border-ember shadow-[0_0_24px_rgba(255,77,46,0.3)]'
                       : 'border-white/[0.06] hover:border-ember/40 hover:scale-[1.02] hover:shadow-[0_20px_60px_rgba(255,77,46,0.15)]'
                     }
                   `}
+                  style={{
+                    aspectRatio: (isPlaying || autoShow) ? '16 / 9' : undefined,
+                    minHeight:   (isPlaying || autoShow) ? '520px'  : undefined,
+                  }}
                   onClick={() => !autoShow && setPlaying(isPlaying ? null : v.id)}
                 >
 
-                  {/* ── SHOW PLAYER: either clicked or no thumbnail ── */}
+                  {/* ── PLAYING STATE ── */}
                   {(isPlaying || autoShow) ? (
                     <>
-                      {/* direct mp4 → <video> */}
+                      {/* Direct mp4 */}
                       {direct ? (
                         <video
                           className="absolute inset-0 w-full h-full object-cover"
@@ -135,36 +133,37 @@ export default function StarDetail() {
                         >
                           <source src={v.src} type="video/mp4" />
                         </video>
+
+                      ) : v.src ? (
+                        /* Embed iframe */
+                        <iframe
+                          src={v.src}
+                          title={v.title}
+                          className="absolute inset-0 w-full h-full border-0"
+                          allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+                          allowFullScreen
+                          referrerPolicy="no-referrer-when-downgrade"
+                        />
+
                       ) : (
-                        /* embed URL → <iframe> */
-                        v.src ? (
-                          <iframe
-                            src={v.src}
-                            title={v.title}
-                            className="absolute inset-0 w-full h-full border-0"
-                            allow="autoplay; fullscreen; picture-in-picture"
-                            allowFullScreen
-                          />
-                        ) : (
-                          /* src is null — nothing to play */
-                          <div className="absolute inset-0 flex flex-col items-center
-                                          justify-center gap-2 bg-graphite">
-                            <svg viewBox="0 0 24 24" fill="none" width="48" height="48"
-                                 stroke="rgba(255,77,46,0.3)" strokeWidth="1.5">
-                              <path d="M15 10l4.553-2.277A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
-                            </svg>
-                            <p className="text-ghost text-xs">No video source</p>
-                          </div>
-                        )
+                        /* No src */
+                        <div className="absolute inset-0 flex flex-col items-center
+                                        justify-center gap-2 bg-graphite">
+                          <svg viewBox="0 0 24 24" fill="none" width="48" height="48"
+                               stroke="rgba(255,77,46,0.3)" strokeWidth="1.5">
+                            <path d="M15 10l4.553-2.277A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+                          </svg>
+                          <p className="text-ghost text-xs">No video source</p>
+                        </div>
                       )}
 
-                      {/* Close button — only when manually opened (not autoShow) */}
+                      {/* Close button */}
                       {!autoShow && (
                         <button
                           onClick={(e) => { e.stopPropagation(); setPlaying(null); }}
-                          className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full
+                          className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full
                                      bg-black/70 text-white flex items-center justify-center
-                                     text-xs hover:bg-ember transition-colors duration-200"
+                                     text-sm hover:bg-ember transition-colors duration-200"
                         >
                           ✕
                         </button>
@@ -174,23 +173,46 @@ export default function StarDetail() {
                   ) : (
 
                     /* ── THUMBNAIL STATE ── */
-                    <>
+                    <div
+                      className="relative w-full bg-black"
+                      style={{ height: '520px' }}
+                    >
+
+                      {/* Blurred background — fills black gaps on sides */}
+                      <img
+                        src={v.thumbnail}
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute inset-0 w-full h-full"
+                        style={{
+                          objectFit:  'cover',
+                          filter:     'blur(18px)',
+                          transform:  'scale(1.1)',
+                          opacity:    0.35,
+                        }}
+                      />
+
+                      {/* Main thumbnail — full image, no cropping */}
                       <img
                         src={v.thumbnail}
                         alt={v.title}
-                        className="absolute inset-0 w-full h-full object-contain bg-black
+                        className="absolute inset-0 w-full h-full
                                    transition-transform duration-700 group-hover:scale-105"
+                        style={{
+                          objectFit:      'contain',  /* ← no cropping */
+                          objectPosition: 'center',
+                        }}
                         loading="lazy"
                       />
 
                       {/* Gradient */}
                       <div className="absolute inset-0 bg-gradient-to-t
-                                      from-black/90 via-black/20 to-transparent" />
+                                      from-black/90 via-black/10 to-transparent" />
 
                       {/* Duration */}
                       {v.duration && (
-                        <span className="absolute top-2 right-2 text-[9px] bg-black/60
-                                         text-silver px-2 py-0.5 rounded-full">
+                        <span className="absolute top-3 right-3 text-[10px] bg-black/70
+                                         text-silver px-2.5 py-1 rounded-full backdrop-blur-sm">
                           {v.duration}
                         </span>
                       )}
@@ -198,21 +220,22 @@ export default function StarDetail() {
                       {/* Play button */}
                       <div className="absolute inset-0 flex items-center justify-center
                                       opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="w-14 h-14 rounded-full bg-ember/90
+                        <div className="w-16 h-16 rounded-full bg-ember/90
                                         flex items-center justify-center shadow-xl">
-                          <svg viewBox="0 0 24 24" fill="white" width="22" height="22">
+                          <svg viewBox="0 0 24 24" fill="white" width="26" height="26">
                             <path d="M8 5v14l11-7z" />
                           </svg>
                         </div>
                       </div>
 
                       {/* Title */}
-                      <div className="absolute bottom-0 left-0 right-0 p-3">
-                        <h4 className="text-white font-semibold text-sm truncate">
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <h4 className="text-white font-semibold text-base truncate">
                           {v.title}
                         </h4>
                       </div>
-                    </>
+
+                    </div>
                   )}
 
                 </div>
